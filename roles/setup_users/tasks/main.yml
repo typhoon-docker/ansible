@@ -1,0 +1,15 @@
+- name: Import variables
+  include_vars: users.yml
+
+- name: Remove public keys
+  file:
+    path: "/home/{{ ansible_user }}/.ssh/authorized_keys"
+    state: absent
+  when: ansible_user != "root"
+
+- name: Install keys
+  authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ item.ssh_keys | join('\n') if item.ssh_keys is defined and item.ssh_keys is iterable else '' }}"
+  loop: "{{ users }}"

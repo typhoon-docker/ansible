@@ -1,0 +1,5 @@
+- name: Provision user accounts
+  hosts: all
+  gather_facts: false
+  roles:
+    - setup_users
