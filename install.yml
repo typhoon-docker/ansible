@@ -3,4 +3,5 @@
   become: yes
   roles:
     # - install_go
-    - install_docker
+    # - install_docker
+    - install_utils

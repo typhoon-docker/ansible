@@ -1,0 +1,47 @@
+- name: Install default packages
+  apt:
+    name:
+      - curl
+      - git
+      - wget
+      - htop
+      - zsh
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: Set Zsh as default shell for current user
+  command: chsh -s /usr/bin/zsh {{ ansible_user_id }}
+
+- name: Set Zsh as default shell for root
+  command: chsh -s /usr/bin/zsh root
+
+- name: Download Oh My Zsh for current user
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: "~/.oh-my-zsh"
+    accept_hostkey: true
+    update: yes
+  become: no
+  become_user: "{{ ansible_user_id }}"
+
+- name: Set Oh My Zsh for current user
+  get_url:
+    url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/templates/zshrc.zsh-template
+    dest: ~/.zshrc
+    force: yes
+  become: no
+  become_user: "{{ ansible_user_id }}"
+
+- name: Download Oh My Zsh for root
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: "~/.oh-my-zsh"
+    accept_hostkey: true
+    update: yes
+
+- name: Set Oh My Zsh for root
+  get_url:
+    url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/templates/zshrc.zsh-template
+    dest: ~/.zshrc
+    force: yes
