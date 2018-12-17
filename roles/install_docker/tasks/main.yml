@@ -21,6 +21,7 @@
   apt:
     cache_valid_time: 1800
     update_cache: yes
+  ignore_errors: yes # TODO: fix
 
 - name: Install docker
   apt:
@@ -28,3 +29,26 @@
     allow_unauthenticated: yes
     package:
       - docker-ce
+
+- name: Check that the somefile.conf exists
+  stat:
+    path: "/usr/local/bin/docker-compose"
+  register: docker_compose_result
+
+- name: Install docker-compose
+  uri:
+    state: present
+    dest: "/usr/local/bin/docker-compose"
+    url: "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-{{ ansible_system.lower() }}-{{ ansible_machine }}"
+  when: docker_compose_result.stat.exists == False
+
+- name: Add the user to the group
+  user:
+    name: "{{ ansible_user_id }}"
+    groups:
+      - docker
+
+- name: Modify permimssions
+  file:
+    mode: "+x"
+    path: "/usr/local/bin/docker-compose"
