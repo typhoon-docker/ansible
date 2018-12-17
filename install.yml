@@ -1,6 +1,6 @@
 - name: Install dependencies
   hosts: all
-  gather_facts: false
   become: yes
   roles:
     - install_go
+    - install_docker
