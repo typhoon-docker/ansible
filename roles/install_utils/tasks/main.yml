@@ -45,3 +45,31 @@
     url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/templates/zshrc.zsh-template
     dest: ~/.zshrc
     force: yes
+
+- name: Create directories for docker volumes
+  file:
+    path: /typhoon_sites
+    owner: debian
+    state: directory
+
+- name: Create directories for docker volumes
+  file:
+    path: /typhoon_dockerfile
+    owner: debian
+    state: directory
+- name: Create directories for docker volumes
+  file:
+    path: /typhoon_docker_compose
+    owner: debian
+    state: directory
+- name: Create directories for docker volumes
+  file:
+    path: /typhoon_volumes
+    owner: debian
+    state: directory
+- name: Create directories for docker volumes
+  file:
+    path: /typhoon_logs
+    owner: debian
+    state: directory
+    group: debian
